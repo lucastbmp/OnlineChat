@@ -17,16 +17,9 @@ int main(){
     struct sockaddr *p_sockaddr = (struct sockaddr *) &address;
 
     // Connect needs a file descriptor
-    if(bind(socketFD, p_sockaddr, sizeof address) == 0){
-        printf("Sucessfuly binded socket to %s:%u!\n", ip, port);
+    int conn = connect(socketFD, p_sockaddr, sizeof address);
+    if(conn == 0){
+        printf("Sucessfuly connected socket to %s:%u!\n", ip, port);
     }
-
-    if(listen(socketFD, 5) == 0){
-        printf("listening...");
-    }
-
-    unsigned int addr_size = sizeof(address);
-    int clientFD = accept(socketFD, p_sockaddr, &addr_size);
-    printf("aceitado");
     return 0;
 }
