@@ -1,10 +1,37 @@
 #include <sys/socket.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <netinet/in.h> // Internet protocol family
 #include <arpa/inet.h> // internet operations
+#include <string.h>
+
+
+void chat(int socketFD) {
+    char username[100];
+    char message[1024];
+    
+    printf("Digite seu usuario: ");
+    fgets(username, sizeof(username), stdin); 
+    username[strcspn(username, "\n")] = 0; 
+    
+    system("clear");
+    
+    do {
+        printf("%s: ", username);
+        fgets(message, sizeof(message), stdin);
+        message[strcspn(message, "\n")] = 0; 
+        
+        send(socketFD, username, strlen(username), 0);
+        send(socketFD, message, strlen(message), 0); 
+        
+    } while (strcmp(message, "exit") != 0);
+}
+
+
+
 
 int main(){
-    // Return a file descriptor
+     // Return a file descriptor
     int socketFD = socket(AF_INET, SOCK_STREAM, 0);
 
     char* ip = "127.0.0.1";
@@ -21,5 +48,8 @@ int main(){
     if(conn == 0){
         printf("Sucessfuly connected socket to %s:%u!\n", ip, port);
     }
+    chat(socketFD);
     return 0;
 }
+
+
