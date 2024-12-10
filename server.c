@@ -66,8 +66,8 @@ int main(){
 
         if(msg_size > 0){
             printf("%s: %s", username, messages);
-            username[0] = '\o';
-            messages[0] = '\o';
+            memset(username, 0, 100);
+            memset(messages, 0, 1024);
         }
     }while(strcmp(commands, "exit") != 0);
     shutdown(socketFD, 0);
