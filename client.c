@@ -9,20 +9,29 @@
 void chat(int socketFD) {
     char username[100];
     char message[1024];
-    
+    char received_username[100];
+    char received_message[1024];
+
     printf("Digite seu usuario: ");
-    fgets(username, sizeof(username), stdin); 
-    username[strcspn(username, "\n")] = 0; 
-    
+    fgets(username, sizeof(username), stdin);
+    username[strcspn(username, "\n")] = 0;
+
     system("clear");
-    
+
     do {
         printf("%s: ", username);
         fgets(message, sizeof(message), stdin);
-        message[strcspn(message, "\n")] = 0; 
-        
-        int sendx = send(socketFD, username, 100, 0);
-        int sendy = send(socketFD, message, 1024, 0);
+        message[strcspn(message, "\n")] = 0;
+
+        send(socketFD, username, 100, 0);
+        send(socketFD, message, 1024, 0);
+
+        recv(socketFD, received_username, 100, 0);
+        recv(socketFD, received_message, 1024, 0);
+
+        printf("%s: %s\n", received_username, received_message);
+        memset(received_username, 0, 100);
+        memset(received_message, 0, 1024);
 
     } while (strcmp(message, "exit") != 0);
 }
