@@ -21,13 +21,11 @@ void chat(int socketFD) {
         fgets(message, sizeof(message), stdin);
         message[strcspn(message, "\n")] = 0; 
         
-        send(socketFD, username, strlen(username), 0);
-        send(socketFD, message, strlen(message), 0); 
-        
+        int sendx = send(socketFD, username, 100, 0);
+        int sendy = send(socketFD, message, 1024, 0);
+
     } while (strcmp(message, "exit") != 0);
 }
-
-
 
 
 int main(){

@@ -23,10 +23,6 @@ struct connected_socket* acceptIncomingConnection(int serverSocketFD){
     p_connected_socket->clientAddress = clientAddress;
     p_connected_socket->clientFD = clientSocketFD;
 
-    if(clientSocketFD != 0){
-        exit(1);
-    }
-
     return p_connected_socket;
 };
 
@@ -48,9 +44,7 @@ int main(){
     if(bind(socketFD, p_sockaddr, sizeof address) == 0){
         printf("Sucessfuly binded socket to %s:%u!\n", ip, port);
     }
-    if(listen(socketFD, 5) == 0){
-        printf("listening...");
-    }
+    listen(socketFD, 5);
 
     struct connected_socket* clientSocket = acceptIncomingConnection(socketFD);
 
@@ -61,14 +55,12 @@ int main(){
         fgets(commands, sizeof(commands), stdin);
         commands[strcspn(commands, "\n")] = 0;
 
-        int username_size = recv(socketFD, username, 100, 0);
-        int msg_size = recv(socketFD, messages, 1024, 0);
+        int username_size = recv(clientSocket->clientFD, username, 100, 0);
+        int msg_size = recv(clientSocket->clientFD, messages, 1024, 0);
 
-        if(msg_size > 0){
-            printf("%s: %s", username, messages);
-            memset(username, 0, 100);
-            memset(messages, 0, 1024);
-        }
+        printf("%s: %s\n", username, messages);
+        memset(username, 0, 100);
+        memset(messages, 0, 1024);
     }while(strcmp(commands, "exit") != 0);
     shutdown(socketFD, 0);
 
