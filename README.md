@@ -1,4 +1,4 @@
 # OnlineChat
 
-Online Chat CLI on C
-Working on multithreading so it can listen to multiple users.
+<p>Online Chat CLI on C</p>
+<p></p>Working on multithreading so it can listen to multiple users.</p>
